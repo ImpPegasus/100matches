@@ -58,3 +58,24 @@ b = Button(2, font.render('Start', 1, TC), 20, 20, 120, 60, False, False)
 bc = Button(3, font.render('Start', 1, TC), 450, 500, 120, 60, False, False)
 bq = Button(0, font.render('Quit', 1, TC), 20, 160, 120, 60, False, False)
 authors = Button(1, font.render('Authors', 1, TC), 20, 90, 120, 60, False, False)
+
+
+
+
+
+def main():
+    global i, state
+    while window:
+
+        clock.tick(FPS)
+    pygame.time.delay(10)
+    pygame.quit()
+
+
+
+
+
+
+
+
+main()
