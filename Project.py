@@ -60,7 +60,45 @@ bq = Button(0, font.render('Quit', 1, TC), 20, 160, 120, 60, False, False)
 authors = Button(1, font.render('Authors', 1, TC), 20, 90, 120, 60, False, False)
 
 
+def state_update(stage: list):
+    screen.fill((0, 0, 0))
+    screen.fill(pygame.Color('White'), pygame.Rect(10, 10, 580, 580))
+    screen.fill(pygame.Color('Black'), pygame.Rect(12, 12, 576, 576))
+    if stage == 'menu':
+        bq.h = 60
+        bq.w = 120
+        bq.y = 160
+        b.y = 20
+        b.x = 20
+        #        screen.fill(pygame.Color('White'), pygame.Rect(10, 10, 580, 580))
+        #        screen.fill(pygame.Color('Black'), pygame.Rect(12, 12, 576, 576))
+        screen.fill(pygame.Color('Orange'), pygame.Rect(authors.x, authors.y, authors.w, authors.h))
+        screen.fill(pygame.Color('Black'), pygame.Rect(authors.x + 2, authors.y + 2, authors.w - 4, authors.h - 4))
+        screen.fill(pygame.Color('Orange'), pygame.Rect(b.x, b.y, b.w, b.h))
+        screen.fill(pygame.Color('Black'), pygame.Rect(b.x + 2, b.y + 2, b.w - 4, b.h - 4))
+        screen.fill(pygame.Color('Orange'), pygame.Rect(bq.x, bq.y, bq.w, bq.h))
+        screen.fill(pygame.Color('Black'), pygame.Rect(bq.x + 2, bq.y + 2, bq.w - 4, bq.h - 4))
 
+    elif stage == 'gameconfig':
+        bq.bid = 0
+        bq.y = 500
+        bq.h = 60
+        bq.w = 120
+        screen.fill(pygame.Color('Orange'), pygame.Rect(bq.x, bq.y, bq.w, bq.h))
+        screen.fill(pygame.Color('Black'), pygame.Rect(bq.x + 2, bq.y + 2, bq.w - 4, bq.h - 4))
+        screen.fill(pygame.Color('Orange'), pygame.Rect(bc.x, bc.y, bc.w, bc.h))
+        screen.fill(pygame.Color('Black'), pygame.Rect(bc.x + 2, bc.y + 2, bc.w - 4, bc.h - 4))
+    elif stage == 'authors':
+        bq.y = 500
+        screen.fill(pygame.Color('Green'), pygame.Rect(250, 250, 120, 60))
+    elif stage == 'game':
+    elif stage == 'winnerscreen':
+
+    b.bl = False
+    authors.bl = False
+    bc.bl = False
+    pygame.display.update()
+    return 0
 
 
 def main():
