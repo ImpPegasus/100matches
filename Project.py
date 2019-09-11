@@ -70,8 +70,6 @@ def state_update(stage: list):
         bq.y = 160
         b.y = 20
         b.x = 20
-        #        screen.fill(pygame.Color('White'), pygame.Rect(10, 10, 580, 580))
-        #        screen.fill(pygame.Color('Black'), pygame.Rect(12, 12, 576, 576))
         screen.fill(pygame.Color('Orange'), pygame.Rect(authors.x, authors.y, authors.w, authors.h))
         screen.fill(pygame.Color('Black'), pygame.Rect(authors.x + 2, authors.y + 2, authors.w - 4, authors.h - 4))
         screen.fill(pygame.Color('Orange'), pygame.Rect(b.x, b.y, b.w, b.h))
@@ -100,11 +98,25 @@ def state_update(stage: list):
     pygame.display.update()
     return 0
 
+def Event():
+    global i, n, g, last, event, turn, window, Num, Num_s, Player, Opponents, bool, Count
+    for event in pygame.event.get():
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            last = state[i]
+            # -------------------------------
+        elif event.type == pygame.QUIT \
+                or event.type == pygame.KEYDOWN \
+                and event.key == pygame.K_ESCAPE \
+                and last == [] or bq.bl and state[i] == 'menu':
+            window = False
+            break
+        return 0
 
 def main():
-    global i, state
+    global i, state, window
+    window = True
     while window:
-
+        Event()
         clock.tick(FPS)
     pygame.time.delay(10)
     pygame.quit()
