@@ -23,6 +23,7 @@ size = width, height = (600, 600)
 pygame.init()
 screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
+font_a = pygame.font.SysFont('Thin Skinned', 75)
 font = pygame.font.SysFont('Thin Skinned', 25)
 Images = [pygame.image.load('m1_1.png').convert_alpha(),
           pygame.image.load('m1f_1.png').convert_alpha(),
@@ -221,9 +222,18 @@ def state_update(stage: list):
         screen.fill(pygame.Color('Black'), pygame.Rect(b.x + 2, b.y + 2, b.w - 4, b.h - 4))
         screen.fill(pygame.Color('Orange'), pygame.Rect(bq.x, bq.y, bq.w, bq.h))
         screen.fill(pygame.Color('Black'), pygame.Rect(bq.x + 2, bq.y + 2, bq.w - 4, bq.h - 4))
-
+        # Texts
+        screen.blit(b.tex, (b.x + 40, b.y + 20))
+        screen.blit(authors.tex, (authors.x + 30, authors.y + 20))
+        screen.blit(bq.tex, (bq.x + 40, bq.y + 20))
+        screen.blit(font_a.render("100 matches", 1, TC), (200, 100))
+        #
         button_active(0)
     elif stage == 'gameconfig':
+
+        for d in range(g[0]+1):
+            Boxes[d].draw(screen)
+
         bq.bid = 0
         bq.y = 500
         bq.h = 60
@@ -232,13 +242,11 @@ def state_update(stage: list):
         screen.fill(pygame.Color('Black'), pygame.Rect(bq.x + 2, bq.y + 2, bq.w - 4, bq.h - 4))
         screen.fill(pygame.Color('Orange'), pygame.Rect(bc.x, bc.y, bc.w, bc.h))
         screen.fill(pygame.Color('Black'), pygame.Rect(bc.x + 2, bc.y + 2, bc.w - 4, bc.h - 4))
-        for d in range(g[0]+1):
-            Boxes[d].draw(screen)
+        button_active(2)
         for Ut_draw in range(len(Ut)):
             if Ut[Ut_draw].active:
 
                 if Ut[Ut_draw].bid == g[1] or Ut[Ut_draw].bid == g[0]:
-                    # print(Ut[Ut_draw].bid, g[0],g[1])
                     screen.fill(pygame.Color('Orange'),
                                 pygame.Rect(Ut[Ut_draw].x, Ut[Ut_draw].y, Ut[Ut_draw].w, Ut[Ut_draw].h))
                 else:
@@ -251,9 +259,11 @@ def state_update(stage: list):
                             pygame.Rect(Ut[Ut_draw].x, Ut[Ut_draw].y, Ut[Ut_draw].w, Ut[Ut_draw].h))
 
         for Ut_tex in range(8):
-            # if Ut[Ut_tex].active:
             screen.blit(Ut[Ut_tex].tex, (Ut[Ut_tex].x + 45, Ut[Ut_tex].y + 20))
-        button_active(2)
+        screen.blit(font.render('Number of Players', 1, TC), (40, 40))
+        screen.blit(font.render('Number of AI Players', 1, TC), (40, 150))
+        screen.blit(bc.tex, (bc.x + 40, bc.y + 20))
+        screen.blit(bq.tex, (bq.x + 40, bq.y + 20))
     elif stage == 'authors':
         bq.y = 500
         screen.fill(pygame.Color('Orange'), pygame.Rect(bq.x, bq.y, bq.w, bq.h))
@@ -266,16 +276,41 @@ def state_update(stage: list):
         bq.w = 60
         bq.h = 50
         bq.y = 530
-        screen.fill(pygame.Color('Orange'), pygame.Rect(bq.x, bq.y, bq.w, bq.h))
-        screen.fill(pygame.Color('Black'), pygame.Rect(bq.x + 2, bq.y + 2, bq.w - 4, bq.h - 4))
-        screen.fill(pygame.Color('Orange'), pygame.Rect(Next.x, Next.y, Next.w, Next.h))
-        screen.fill(pygame.Color('Black'), pygame.Rect(Next.x + 2, Next.y + 2, Next.w - 4, Next.h - 4))
-        screen.fill(pygame.Color('Orange'), pygame.Rect(Pause.x, Pause.y, Pause.w, Pause.h))
-        screen.fill(pygame.Color('Black'), pygame.Rect(Pause.x + 2, Pause.y + 2, Pause.w - 4, Pause.h - 4))
+        Color = ((255, 255, 255),  # 0
+                 pygame.Color('Red'),  # 1
+                 pygame.Color('Blue'),  # 2
+                 pygame.Color('Green'),  # 3
+                 pygame.Color('Yellow'),  # 4
+                 (150, 0, 0),  # 5
+                 (0, 0, 150),  # 6
+                 (0, 150, 0),  # 7
+                 (150, 150, 0))  # 8
+        ColorRect = (pygame.Rect(0, 0, 0, 0),
+                     pygame.Rect(250, 500, 80, 45),
+                     pygame.Rect(335, 500, 80, 45),
+                     pygame.Rect(420, 500, 80, 45),
+                     pygame.Rect(505, 500, 80, 45)
+                     )
+        for TurnFill in range(0, Player + 1):
+            if turn[0] == TurnFill:
+                screen.fill(Color[TurnFill], pygame.Rect(10, 10, 580, 580))
+                screen.fill(pygame.Color('Black'), pygame.Rect(12, 12, 576, 576))
+        if Player == 2:
+            screen.fill(Color[5], ColorRect[3])
+            screen.fill(Color[6], ColorRect[4])
+        if Player == 3:
+            screen.fill(Color[5], ColorRect[2])
+            screen.fill(Color[6], ColorRect[3])
+            screen.fill(Color[7], ColorRect[4])
+        if Player == 4:
+            screen.fill(Color[5], ColorRect[1])
+            screen.fill(Color[6], ColorRect[2])
+            screen.fill(Color[7], ColorRect[3])
+            screen.fill(Color[8], ColorRect[4])
+        for TurnFill in range(Player + 1):
+            if turn[0] == TurnFill and TurnFill != 0:
+                screen.fill(Color[TurnFill], ColorRect[TurnFill + (4 - Player)])
         screen.fill(pygame.Color('Orange'), pygame.Rect(Match[10].x, Match[10].y, Match[10].w, Match[10].h))
-        for d in range(g[0] + 1):
-            Name[d + 1] = Boxes[d].text
-
         if Match[10].active and Num == 0 and not Num_s[1]:
             for MB in range(10):
                 ChoiceButton.image = Images[0]
@@ -284,7 +319,6 @@ def state_update(stage: list):
                 ChoiceButton.rect.x = Match[MB].x
                 ChoiceButton.rect.y = Match[MB].y
                 Sprites.draw(screen)
-                # pygame.display.update(ChoiceButton.rect)
         elif Match[10].active and Num != None and Num != int and Num > 0 and not Num_s[1]:
             for MB in range(Num):
                 ChoiceButton.image = Images[1]
@@ -300,7 +334,6 @@ def state_update(stage: list):
                 ChoiceButton.rect.x = Match[MB].x
                 ChoiceButton.rect.y = Match[MB].y
                 Sprites.draw(screen)
-            # pygame.display.update(ChoiceButton.rect)
         else:
             screen.fill(pygame.Color('Black'),
                         pygame.Rect(Match[10].x + 2, Match[10].y + 2, Match[10].w - 4, Match[10].h - 4))
@@ -310,7 +343,6 @@ def state_update(stage: list):
         screen.fill(pygame.Color('Black'), pygame.Rect(Next.x + 2, Next.y + 2, Next.w - 4, Next.h - 4))
         screen.fill(pygame.Color('Orange'), pygame.Rect(Pause.x, Pause.y, Pause.w, Pause.h))
         screen.fill(pygame.Color('Black'), pygame.Rect(Pause.x + 2, Pause.y + 2, Pause.w - 4, Pause.h - 4))
-        # screen.blit(Images[0],(Match[MB].x,Match[MB].y))
         pygame.draw.polygon(screen, pygame.Color('White'),
                             [[bq.x + 15, bq.y + 25], [bq.x + 40, bq.y + 10], [bq.x + 40, bq.y + 40]])
         if turn[0] == 0:
@@ -321,10 +353,21 @@ def state_update(stage: list):
             screen.fill(pygame.Color('White'), pygame.Rect(Pause.x + 10, Pause.y + 10, 10, 30))
             screen.fill(pygame.Color('White'), pygame.Rect(Pause.x + 30, Pause.y + 10, 10, 30))
             screen.fill(pygame.Color('White'), pygame.Rect(Match[10].x + 10, Match[10].y + 20, 30, 6))
+        for d in range(g[0] + 1):
+            Name[d + 1] = Boxes[d].text
+        NMT = 'Matches on the table: ' + str(Count)
+        TP = 'Turn: ' + Name[turn[0]]
+        screen.blit(font.render(NMT, 1, TC), (40, 40))
+        screen.blit(font.render(TP, 1, TC), (40, 80))
         button_active(3)
     elif stage == 'winnerscreen':
+        for d in range(g[0] + 1):
+            Name[d + 1] = Boxes[d].text
         screen.fill(pygame.Color('Orange'), pygame.Rect(bq.x, bq.y, bq.w, bq.h))
         screen.fill(pygame.Color('Black'), pygame.Rect(bq.x + 2, bq.y + 2, bq.w - 4, bq.h - 4))
+        pygame.draw.polygon(screen, pygame.Color('White'),
+                            [[bq.x + 15, bq.y + 25], [bq.x + 40, bq.y + 10], [bq.x + 40, bq.y + 40]])
+        screen.blit(font.render("Winner is " + Name[turn[0]], 1, TC), (250, 250))
 
     b.bl = False
     authors.bl = False
