@@ -152,6 +152,7 @@ def state_update(stage: list):
         screen.fill(pygame.Color('Orange'), pygame.Rect(bq.x, bq.y, bq.w, bq.h))
         screen.fill(pygame.Color('Black'), pygame.Rect(bq.x + 2, bq.y + 2, bq.w - 4, bq.h - 4))
 
+        button_active(0)
     elif stage == 'gameconfig':
         bq.bid = 0
         bq.y = 500
@@ -181,11 +182,28 @@ def state_update(stage: list):
         for Ut_tex in range(8):
             # if Ut[Ut_tex].active:
             screen.blit(Ut[Ut_tex].tex, (Ut[Ut_tex].x + 45, Ut[Ut_tex].y + 20))
+        button_active(2)
     elif stage == 'authors':
         bq.y = 500
-        screen.fill(pygame.Color('Green'), pygame.Rect(250, 250, 120, 60))
+        screen.fill(pygame.Color('Orange'), pygame.Rect(bq.x, bq.y, bq.w, bq.h))
+        screen.fill(pygame.Color('Black'), pygame.Rect(bq.x + 2, bq.y + 2, bq.w - 4, bq.h - 4))
+        screen.blit(font.render("Made by Drobot", 1, TC), (250, 250))
+        screen.blit(bq.tex, (bq.x + 40, bq.y + 20))
+        button_active(1)
     elif stage == 'game':
+        bq.bid = 2
+        bq.w = 60
+        bq.h = 50
+        bq.y = 530
+        screen.fill(pygame.Color('Orange'), pygame.Rect(bq.x, bq.y, bq.w, bq.h))
+        screen.fill(pygame.Color('Black'), pygame.Rect(bq.x + 2, bq.y + 2, bq.w - 4, bq.h - 4))
+        screen.fill(pygame.Color('Orange'), pygame.Rect(Next.x, Next.y, Next.w, Next.h))
+        screen.fill(pygame.Color('Black'), pygame.Rect(Next.x + 2, Next.y + 2, Next.w - 4, Next.h - 4))
+        screen.fill(pygame.Color('Orange'), pygame.Rect(Pause.x, Pause.y, Pause.w, Pause.h))
+        screen.fill(pygame.Color('Black'), pygame.Rect(Pause.x + 2, Pause.y + 2, Pause.w - 4, Pause.h - 4))
     elif stage == 'winnerscreen':
+        screen.fill(pygame.Color('Orange'), pygame.Rect(bq.x, bq.y, bq.w, bq.h))
+        screen.fill(pygame.Color('Black'), pygame.Rect(bq.x + 2, bq.y + 2, bq.w - 4, bq.h - 4))
 
     b.bl = False
     authors.bl = False
