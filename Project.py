@@ -33,15 +33,36 @@ ChoiceButton = pygame.sprite.Sprite()
 
 class Input_Box(object):
     def __init__(self, x, y, w, h, text=''):
-        self.x = x
-        self.y = y
-        self.w = w
-        self.h = h
+        self.rect = pygame.Rect(x, y, w, h)
         self.line = pygame.Rect(x - 2, y - 2, w + 4, h + 4)
         self.color = pygame.Color('Black')  # (int,int,int)
         self.text = text
         self.txt = font.render(text, 1, self.color)
         self.active = False
+
+    def Ev(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if self.rect.collidepoint(event.pos):
+                self.active = True
+                self.text = ''
+            else:
+                self.active = False
+            self.color = pygame.Color('Black') if self.active else (50, 50, 50)
+        if event.type == pygame.KEYDOWN:
+            if self.active:
+                if event.key == pygame.K_RETURN:
+                    self.text = 'Player'
+                elif event.key == pygame.K_BACKSPACE:
+                    self.text = self.text[:-1]
+                else:
+                    self.text = self.text + event.unicode
+                self.txt = font.render(self.text, 1, pygame.Color('White'))
+
+    def draw(self, screen):
+        screen.fill(pygame.Color('Orange'), self.line)
+        screen.fill(self.color, self.rect)
+        screen.blit(self.txt, (self.rect.x + 10, self.rect.y + 10))
+        pygame.display.update(self.line)
 
 Boxes = [Input_Box(120, 300, 140, 32, 'Player 1'),
          Input_Box(120, 340, 140, 32, 'Player 2'),
@@ -184,6 +205,7 @@ def button_click(but: Button):
     return None
 
 def state_update(stage: list):
+    Name = ['Pause', 'Player 1', 'Player 2', 'Player 3', 'Player 4']
     screen.fill((0, 0, 0))
     screen.fill(pygame.Color('White'), pygame.Rect(10, 10, 580, 580))
     screen.fill(pygame.Color('Black'), pygame.Rect(12, 12, 576, 576))
@@ -210,7 +232,8 @@ def state_update(stage: list):
         screen.fill(pygame.Color('Black'), pygame.Rect(bq.x + 2, bq.y + 2, bq.w - 4, bq.h - 4))
         screen.fill(pygame.Color('Orange'), pygame.Rect(bc.x, bc.y, bc.w, bc.h))
         screen.fill(pygame.Color('Black'), pygame.Rect(bc.x + 2, bc.y + 2, bc.w - 4, bc.h - 4))
-
+        for d in range(g[0]+1):
+            Boxes[d].draw(screen)
         for Ut_draw in range(len(Ut)):
             if Ut[Ut_draw].active:
 
@@ -250,7 +273,8 @@ def state_update(stage: list):
         screen.fill(pygame.Color('Orange'), pygame.Rect(Pause.x, Pause.y, Pause.w, Pause.h))
         screen.fill(pygame.Color('Black'), pygame.Rect(Pause.x + 2, Pause.y + 2, Pause.w - 4, Pause.h - 4))
         screen.fill(pygame.Color('Orange'), pygame.Rect(Match[10].x, Match[10].y, Match[10].w, Match[10].h))
-
+        for d in range(g[0] + 1):
+            Name[d + 1] = Boxes[d].text
 
         if Match[10].active and Num == 0 and not Num_s[1]:
             for MB in range(10):
@@ -310,7 +334,10 @@ def state_update(stage: list):
 
 def Event():
     global i, n, g, last, event, turn, window, Num, Num_s, Player, Opponents, bool, Count
+
     for event in pygame.event.get():
+        for box in Boxes:
+            box.Ev(event)
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             last.append(state[i])
             # -------------------------------
