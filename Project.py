@@ -10,7 +10,7 @@ turn = int
 window = False
 state = ('menu', 'authors', 'gameconfig', 'game', 'winnerscreen')
 vMax = 100
-last = str
+last = []
 size = width, height = (600, 600)
 
 # Init functions
@@ -216,7 +216,10 @@ def Event():
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             last.append(state[i])
-            i = button_click(b) or button_click(authors) or button_click(bc) or button_click(bq) or button_click(Ut1) or button_click(Ut2) or button_click(Ut3) or button_click(Ut4) or button_click(Ut5) or button_click(Ut6) or button_click(Ut7) or button_click(Ut8)
+            i = button_click(b) \
+                or button_click(authors) \
+                or button_click(bc) \
+                or button_click(bq)
             # -------------------------------
             g[0] = button_click(Ut[3]) \
                    or button_click(Ut[2]) \
@@ -233,30 +236,58 @@ def Event():
                     g[g_check + 2] = g[g_check]
                 else:
                     g[g_check] = g[g_check + 2]
+
+            if i != None:
+                if n == 0 and i == 0 and state[i] == 'menu':
+                    # bool = False
+                    # Count = 0
+                    window[1] = True
+                    break
+                # if n != 0:
+                #    bq.bl = False
+                if i == 0:
+                    last = []
+                elif i == 2 and n == 3:
+                    for j in range(2):
+                        last.pop()
+                n = i
+            else:
+                i = n
+                # bq.bl = False
+                last.pop()
         elif event.type == pygame.QUIT \
                 or event.type == pygame.KEYDOWN \
                 and event.key == pygame.K_ESCAPE \
                 and last == [] or bq.bl and state[i] == 'menu':
             window = False
             break
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE and last != [] and turn[0] == 0:
+            if len(last) < len(state):
+                for d in range(len(state)):
+                    if state[d] == last[len(last) - 1]:
+                        i = d
+                last.pop()
         return 0
 
+
+def list_check(first: list):
+    for f in range(len(first) - 1):
+        for s in range(len(first)):
+            if first[f] == first[s] and f != s:
+                first.pop(s)
+    return first
+
+
 def main():
-    global i, state, window
+    global i, state, window, last
     window = True
     while window:
         state_update(state[i])
+        last = list_check(last)
         Event()
 
         clock.tick(FPS)
     pygame.time.delay(10)
     pygame.quit()
-
-
-
-
-
-
-
 
 main()
