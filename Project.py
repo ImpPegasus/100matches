@@ -37,7 +37,6 @@ class Input_Box(object):
         self.txt = font.render(text, 1, self.color)
         self.active = False
 
-
 Boxes = [Input_Box(120, 300, 140, 32, 'Player 1'),
          Input_Box(120, 340, 140, 32, 'Player 2'),
          Input_Box(120, 380, 140, 32, 'Player 3'),
@@ -59,6 +58,15 @@ bc = Button(3, font.render('Start', 1, TC), 450, 500, 120, 60, False, False)
 bq = Button(0, font.render('Quit', 1, TC), 20, 160, 120, 60, False, False)
 authors = Button(1, font.render('Authors', 1, TC), 20, 90, 120, 60, False, False)
 
+Ut = (Button(0, font.render('1', 1, TC), 30, 70, 100, 60, True, False),
+      Button(1, font.render('2', 1, TC), 135, 70, 100, 60, True, False),
+      Button(2, font.render('3', 1, TC), 240, 70, 100, 60, True, False),
+      Button(3, font.render('4', 1, TC), 345, 70, 100, 60, True, False),
+      Button(4, font.render('0', 1, TC), 30, 180, 100, 60, True, False),
+      Button(5, font.render('1', 1, TC), 135, 180, 100, 60, True, False),
+      Button(6, font.render('2', 1, TC), 240, 180, 100, 60, True, False),
+      Button(7, font.render('3', 1, TC), 345, 180, 100, 60, True, False))
+
 def button_active(num: int):
     if num == 0:
         # Main section
@@ -67,7 +75,8 @@ def button_active(num: int):
         bq.active = True
         bc.active = False
         # Ut section
-
+        for Utc in range(0, len(Ut)):
+            Ut[Utc].active = False
         # Game section
 
     elif num == 1:
@@ -77,7 +86,8 @@ def button_active(num: int):
         bq.active = True
         bc.active = False
         # Ut section
-
+        for Utc in range(0, len(Ut)):
+            Ut[Utc].active = False
         # Game section
 
     elif num == 2:
@@ -87,7 +97,14 @@ def button_active(num: int):
         bq.active = True
         bc.active = True
         # Ut section
-
+        for Utc in range(0, 4):
+            Ut[Utc].active = True
+        if g[0] != None:
+            for Utc in range(4, 8):
+                Ut[Utc].active = False
+            for g_comp in range(5, g[0] + 5):
+                Ut[g_comp].active = True
+                Ut[g_comp - 1].active = True
         # Game section
 
     elif num == 3:
@@ -97,9 +114,25 @@ def button_active(num: int):
         bq.active = True
         bc.active = False
         # Ut section
-
+        for Utc in range(0, len(Ut)):
+            Ut[Utc].active = False
         # Game section
 
+    return None
+
+def button_click(but: Button):
+    if event.pos[0] >= but.x \
+            and event.pos[1] >= but.y \
+            and event.pos[0] <= (but.x + but.w) \
+            and event.pos[1] <= (but.y + but.h) \
+            and but.active:
+        screen.fill(pygame.Color('Orange'), pygame.Rect(but.x, but.y, but.w, but.h))
+        pygame.display.update(pygame.Rect(but.x, but.y, but.w, but.h))
+        pygame.time.delay(150)
+        if but.bl == False:
+            screen.fill(pygame.Color('Black'), pygame.Rect(but.x + 2, but.y + 2, but.w - 4, but.h - 4))
+            pygame.display.update(pygame.Rect(but.x, but.y, but.w, but.h))
+        return but.bid
     return None
 
 def state_update(stage: list):
@@ -128,6 +161,26 @@ def state_update(stage: list):
         screen.fill(pygame.Color('Black'), pygame.Rect(bq.x + 2, bq.y + 2, bq.w - 4, bq.h - 4))
         screen.fill(pygame.Color('Orange'), pygame.Rect(bc.x, bc.y, bc.w, bc.h))
         screen.fill(pygame.Color('Black'), pygame.Rect(bc.x + 2, bc.y + 2, bc.w - 4, bc.h - 4))
+
+        for Ut_draw in range(len(Ut)):
+            if Ut[Ut_draw].active:
+
+                if Ut[Ut_draw].bid == g[1] or Ut[Ut_draw].bid == g[0]:
+                    # print(Ut[Ut_draw].bid, g[0],g[1])
+                    screen.fill(pygame.Color('Orange'),
+                                pygame.Rect(Ut[Ut_draw].x, Ut[Ut_draw].y, Ut[Ut_draw].w, Ut[Ut_draw].h))
+                else:
+                    screen.fill(pygame.Color('Orange'),
+                                pygame.Rect(Ut[Ut_draw].x, Ut[Ut_draw].y, Ut[Ut_draw].w, Ut[Ut_draw].h))
+                    screen.fill(pygame.Color('Black'),
+                                pygame.Rect(Ut[Ut_draw].x + 2, Ut[Ut_draw].y + 2, Ut[Ut_draw].w - 4, Ut[Ut_draw].h - 4))
+            else:
+                screen.fill(pygame.Color('Gray'),
+                            pygame.Rect(Ut[Ut_draw].x, Ut[Ut_draw].y, Ut[Ut_draw].w, Ut[Ut_draw].h))
+
+        for Ut_tex in range(8):
+            # if Ut[Ut_tex].active:
+            screen.blit(Ut[Ut_tex].tex, (Ut[Ut_tex].x + 45, Ut[Ut_tex].y + 20))
     elif stage == 'authors':
         bq.y = 500
         screen.fill(pygame.Color('Green'), pygame.Rect(250, 250, 120, 60))
@@ -144,8 +197,24 @@ def Event():
     global i, n, g, last, event, turn, window, Num, Num_s, Player, Opponents, bool, Count
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            last = state[i]
+            last.append(state[i])
+            i = button_click(b) or button_click(authors) or button_click(bc) or button_click(bq) or button_click(Ut1) or button_click(Ut2) or button_click(Ut3) or button_click(Ut4) or button_click(Ut5) or button_click(Ut6) or button_click(Ut7) or button_click(Ut8)
             # -------------------------------
+            g[0] = button_click(Ut[3]) \
+                   or button_click(Ut[2]) \
+                   or button_click(Ut[1]) \
+                   or button_click(Ut[0])
+            # -------------------------------
+            g[1] = button_click(Ut[7]) \
+                   or button_click(Ut[6]) \
+                   or button_click(Ut[5]) \
+                   or button_click(Ut[4])
+            # -------------------------------
+            for g_check in range(2):
+                if g[g_check] != None:
+                    g[g_check + 2] = g[g_check]
+                else:
+                    g[g_check] = g[g_check + 2]
         elif event.type == pygame.QUIT \
                 or event.type == pygame.KEYDOWN \
                 and event.key == pygame.K_ESCAPE \
@@ -158,7 +227,9 @@ def main():
     global i, state, window
     window = True
     while window:
+        state_update(state[i])
         Event()
+
         clock.tick(FPS)
     pygame.time.delay(10)
     pygame.quit()
