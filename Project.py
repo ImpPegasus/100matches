@@ -59,6 +59,48 @@ bc = Button(3, font.render('Start', 1, TC), 450, 500, 120, 60, False, False)
 bq = Button(0, font.render('Quit', 1, TC), 20, 160, 120, 60, False, False)
 authors = Button(1, font.render('Authors', 1, TC), 20, 90, 120, 60, False, False)
 
+def button_active(num: int):
+    if num == 0:
+        # Main section
+        b.active = True
+        authors.active = True
+        bq.active = True
+        bc.active = False
+        # Ut section
+
+        # Game section
+
+    elif num == 1:
+        # Main section
+        b.active = False
+        authors.active = False
+        bq.active = True
+        bc.active = False
+        # Ut section
+
+        # Game section
+
+    elif num == 2:
+        # Main section
+        b.active = False
+        authors.active = False
+        bq.active = True
+        bc.active = True
+        # Ut section
+
+        # Game section
+
+    elif num == 3:
+        # Main section
+        b.active = False
+        authors.active = False
+        bq.active = True
+        bc.active = False
+        # Ut section
+
+        # Game section
+
+    return None
 
 def state_update(stage: list):
     screen.fill((0, 0, 0))
