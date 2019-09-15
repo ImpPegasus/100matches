@@ -110,6 +110,12 @@ Match = [
     Button(0, 'Choice', 275, 275, 50, 50, True, False)  # Choice matches
 ]
 
+def ExitCheck():
+    global window
+    if window[1]:
+        window[0] = False
+        return True
+    return 0
 
 def AIturn(Cnt: int):
     if Cnt < 10:
