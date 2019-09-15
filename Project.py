@@ -8,11 +8,11 @@ FPS = 120
 button_ch = [0, 0, [0, 4, 0, 4], int, [int, False], 0, 0]
 i = 0
 n = 0
-g = 0
+g = [0, 4, 0, 0]
 Num = button_ch[3]
 Num_s = button_ch[4]
 turn = [1, 0]
-window = False
+window = [True, False]
 state = ('menu', 'authors', 'gameconfig', 'game', 'winnerscreen')
 vMax = 100
 last = []
@@ -416,7 +416,6 @@ def state_update(stage: list):
 
 def Event():
     global i, n, g, last, event, turn, window, Num, Num_s, Player, Opponents, bool, Count
-
     for event in pygame.event.get():
         for box in Boxes:
             box.Ev(event)
@@ -454,9 +453,20 @@ def Event():
             button_ch[5] = button_click(Pause) \
                            or button_click(Next)
             # -------------------------------
-
+            if button_ch[5] == None:
+                button_ch[5] = button_ch[6]
+            elif button_ch[5] == 12 and Pause.active:
+                if turn[0] > 0:
+                    button_ch[6] = turn[0]
+                    turn[0] = 0
+                elif turn[0] == 0:
+                    turn[0] = button_ch[6]
+            elif button_ch[5] == 11 and Next.active:
+                if Num_s[0] != None and Num_s[0] != int and Num_s[0] != 0:
+                    TurnShift()
+            else:
+                button_ch[6] = button_ch[5]
             # -------------------------------
-
             if Num == None:
                 Num = Num_s[0]
             elif Num == 0:
@@ -476,7 +486,7 @@ def Event():
 
             if i != None:
                 if n == 0 and i == 0 and state[i] == 'menu':
-                    window = False
+                    window[1] = True
                     break
                 if i == 0:
                     last = []
@@ -487,14 +497,13 @@ def Event():
             else:
                 i = n
                 last.pop()
-
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_LCTRL:
             print(g[1])
         elif event.type == pygame.QUIT \
                 or event.type == pygame.KEYDOWN \
                 and event.key == pygame.K_ESCAPE \
                 and last == []:
-            window = False
+            window[1] = True
             break
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE and last != [] and turn[0] == 0:
             if len(last) < len(state):
@@ -532,12 +541,36 @@ def list_check(first: list):
 
 def main():
     global i, state, window, last
-    window = True
-    while window:
+    while window[0]:
+        # if pygame.display.get_init()
+        if ExitCheck():
+            break
         state_update(state[i])
         last = list_check(last)
+
+        if turn[0] > (Player - Opponents) and turn != 0 and i == 3:
+
+            Next.active = False
+            Match[10].active = False
+            Num_s[0] = AIturn(Count)
+            loop_p = 0
+            loop = pygame.time.get_ticks()
+            if Num_s[0] != int:
+                while state[i] == 'game':
+                    ExitCheck()
+                    loop_p = loop_p + pygame.time.get_ticks()
+                    if (loop_p - loop) > 55 * 60 * 1000:
+                        # if (loop_p - loop) > 120000000:
+                        loop = None
+                        loop_p = 0
+                        break
+                TurnShift()
+                Num_s[0] = int
+                Num = None
         Event()
 
+        if i != None and i != int and state[i] == 'gameconfig':
+            config()
         clock.tick(FPS)
     pygame.time.delay(10)
     pygame.quit()
