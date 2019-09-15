@@ -1,6 +1,22 @@
+
 play = True
 MAX = 100
 
+
+def PlayerControl(plr: int, op: int):
+    n = int
+    if op == 1:
+        n = 2
+    elif op == 2:
+        n = 2
+    elif op == 3:
+        n = 3
+    elif op == 4:
+        n = 4
+    else:
+        print("Some bugs in there")
+    if plr > n: plr = 1
+    return plr
 
 def AIturn():
     nonlocal Num, Count
@@ -57,7 +73,7 @@ def game(plr: int, NumOfPlayers: int, op: int):
         print('You must use 1-10 range, try again')
     while Count > 0:
         game(plr, NumOfPlayers, op)
-    return 0
+    return plr
 def __main__():
     Num = 0
     Count = MAX
