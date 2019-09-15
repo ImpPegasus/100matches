@@ -11,7 +11,7 @@ n = 0
 g = 0
 Num = button_ch[3]
 Num_s = button_ch[4]
-turn = [1,0]
+turn = [1, 0]
 window = False
 state = ('menu', 'authors', 'gameconfig', 'game', 'winnerscreen')
 vMax = 100
@@ -110,12 +110,14 @@ Match = [
     Button(0, 'Choice', 275, 275, 50, 50, True, False)  # Choice matches
 ]
 
+
 def ExitCheck():
     global window
     if window[1]:
         window[0] = False
         return True
     return 0
+
 
 def AIturn(Cnt: int):
     if Cnt < 10:
@@ -124,6 +126,7 @@ def AIturn(Cnt: int):
         AIC = random.randrange(1, 10)
     pygame.time.delay(200)
     return AIC
+
 
 def TurnShift():
     global i, turn, Player, Opponents, Count, Num_s, Num
@@ -141,8 +144,8 @@ def TurnShift():
         i = 4
         Player = 0
         Opponents = 0
-        #Num = int
-        #Num_s[0] = int
+        # Num = int
+        # Num_s[0] = int
     Num_s[0] = int
     Num = None
     return 0
@@ -503,6 +506,21 @@ def Event():
                 print("Ошибка: Выход за пределы массива")
     return 0
 
+
+def config():
+    global Num, Count, vMax, turn, Player, Opponents
+    Count = vMax
+    turn[0] = 0
+    button_ch[6] = 1
+    Num = int
+    Num_s[0] = int
+    Player = g[0] + 1
+    if Player == 1:
+        Player = Player + 1
+        Opponents = 1
+    else:
+        Opponents = g[1] - 4
+    return 0
 
 def list_check(first: list):
     for f in range(len(first) - 1):
