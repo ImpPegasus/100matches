@@ -110,6 +110,15 @@ Match = [
     Button(0, 'Choice', 275, 275, 50, 50, True, False)  # Choice matches
 ]
 
+
+def AIturn(Cnt: int):
+    if Cnt < 10:
+        AIC = Cnt
+    else:
+        AIC = random.randrange(1, 10)
+    pygame.time.delay(200)
+    return AIC
+
 def TurnShift():
     global i, turn, Player, Opponents, Count, Num_s, Num
     if Count >= Num_s[0]:
