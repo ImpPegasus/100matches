@@ -14,7 +14,7 @@ def PlayerControl(plr: int, op: int):
     elif op == 4:
         n = 4
     else:
-        print("Some bugs in there")
+        print("Some bugs in PlayerControl function")
     if plr > n: plr = 1
     return plr
 
@@ -47,22 +47,31 @@ def game(plr: int, NumOfPlayers: int, op: int):
             print('Incorrect value, please try again')
     elif plr == 2:
         print("It's ", names[2], " turn!")
-        print('Table has ', Count, ' matches, how much would you take?')
-        input(Num)
+        if NumOfPlayers >= 2:
+            print('Table has ', Count, ' matches, how much would you take?')
+            input(Num)
+        else:
+            AIturn()
         if type(Num) != int:
             print('Incorrect value, please try again')
 
     elif plr == 3:
         print("It's ", names[3], " turn!")
-        print('Table has ', Count, ' matches, how much would you take?')
-        input(Num)
+        if NumOfPlayers >= 3:
+            print('Table has ', Count, ' matches, how much would you take?')
+            input(Num)
+        else:
+            AIturn()
         if type(Num) != int:
             print('Incorrect value, please try again')
 
     elif plr == 4:
         print("It's ", names[4], " turn!")
-        print('Table has ', Count, ' matches, how much would you take?')
-        input(Num)
+        if NumOfPlayers >= 4:
+            print('Table has ', Count, ' matches, how much would you take?')
+            input(Num)
+        else:
+            AIturn()
         if type(Num) != int:
             print('Incorrect value, please try again')
 
@@ -84,7 +93,6 @@ def __main__():
     NumOfPlayers = int
 
 
-    AIturn()
     while play:
         print('Number of opponents(1-4)')
         input(opponents)
@@ -95,6 +103,9 @@ def __main__():
         if type(NumOfPlayers) != int or opponents > 4 or opponents < 1:
             print('Number of Players(1-3)')
         if type(NumOfPlayers) == int:
+
+            if NumOfPlayers > opponents:
+                print("Whoops, number of players shouldn't be bigger, than number of opponents")
             start(NumOfPlayers)
             Count = MAX
             player = game(player, NumOfPlayers, opponents)
