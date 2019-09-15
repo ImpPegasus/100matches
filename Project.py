@@ -11,7 +11,7 @@ n = 0
 g = 0
 Num = button_ch[3]
 Num_s = button_ch[4]
-turn = int
+turn = [1,0]
 window = False
 state = ('menu', 'authors', 'gameconfig', 'game', 'winnerscreen')
 vMax = 100
@@ -110,6 +110,27 @@ Match = [
     Button(0, 'Choice', 275, 275, 50, 50, True, False)  # Choice matches
 ]
 
+def TurnShift():
+    global i, turn, Player, Opponents, Count, Num_s, Num
+    if Count >= Num_s[0]:
+        Count = Count - Num_s[0]
+    else:
+        Num_s[0] = Count
+        Count = Count - Num_s[0]
+    if Count > 0:
+        if turn[0] < Player:
+            turn[0] = turn[0] + 1
+        elif turn[0] != 0:
+            turn[0] = 1
+    else:
+        i = 4
+        Player = 0
+        Opponents = 0
+        #Num = int
+        #Num_s[0] = int
+    Num_s[0] = int
+    Num = None
+    return 0
 
 def button_active(num: int):
     if num == 0:
