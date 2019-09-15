@@ -1,5 +1,5 @@
+from random import randrange
 
-play = True
 MAX = 100
 
 
@@ -75,19 +75,30 @@ def game(plr: int, NumOfPlayers: int, op: int):
         game(plr, NumOfPlayers, op)
     return plr
 def __main__():
-    Num = 0
-    Count = MAX
+    Num = int
+    Count = int
     names = ['Player 1', 'Player 2', 'Player 3', 'Player 4']
+    player = int
+    opponents = int
+    play = True
     NumOfPlayers = int
 
 
     AIturn()
     while play:
-        print('Number of opponents')
-        print('')
+        print('Number of opponents(1-4)')
+        input(opponents)
+        if type(opponents) != int or opponents > 4 or opponents < 1:
+            print('Incorrect value, try again')
+        print('Number of Players(1-3)')
         input(NumOfPlayers)
-        start(NumOfPlayers)
-        game(0, 0, 0)
+        if type(NumOfPlayers) != int or opponents > 4 or opponents < 1:
+            print('Number of Players(1-3)')
+        if type(NumOfPlayers) == int:
+            start(NumOfPlayers)
+            Count = MAX
+            player = game(player, NumOfPlayers, opponents)
+            print('Winner is ', names[player], '. Congratulations!')
 
     return 0
 
