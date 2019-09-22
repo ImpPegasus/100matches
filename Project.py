@@ -306,9 +306,13 @@ def state_update(stage: list):
         screen.blit(bq.tex, (bq.x + 40, bq.y + 20))
     elif stage == 'authors':
         bq.y = 500
+        screen.fill((0,140,0), pygame.Rect(330, 430, 250, 150))
+        screen.fill(pygame.Color('Black'), pygame.Rect(332, 432, 246, 146))
         screen.fill(pygame.Color('Orange'), pygame.Rect(bq.x, bq.y, bq.w, bq.h))
         screen.fill(pygame.Color('Black'), pygame.Rect(bq.x + 2, bq.y + 2, bq.w - 4, bq.h - 4))
-        screen.blit(font.render("Made by Drobot", 1, TC), (250, 250))
+        screen.blit(font.render("Made by students IV-822:", 1, TC), (350, 450))
+        screen.blit(font.render("Drobot", 1, TC), (350, 475))
+        screen.blit(font.render("Safronov", 1, TC), (350, 500))
         screen.blit(bq.tex, (bq.x + 40, bq.y + 20))
         button_active(1)
     elif stage == 'game':
