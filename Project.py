@@ -1,4 +1,5 @@
 import pygame
+import random
 
 Player = 0
 Opponents = 0
@@ -25,10 +26,10 @@ screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
 font_a = pygame.font.SysFont('Thin Skinned', 75)
 font = pygame.font.SysFont('Thin Skinned', 25)
-Images = [pygame.image.load('m1_1.png').convert_alpha(),
-          pygame.image.load('m1f_1.png').convert_alpha(),
-          pygame.image.load('m1f90.png').convert_alpha(),
-          pygame.image.load('m190.png').convert_alpha()]
+Images = [pygame.image.load('data/m1_1.png').convert_alpha(),
+          pygame.image.load('data/m1f_1.png').convert_alpha(),
+          pygame.image.load('data/m1f90.png').convert_alpha(),
+          pygame.image.load('data/m190.png').convert_alpha()]
 Sprites = pygame.sprite.Group()
 ChoiceButton = pygame.sprite.Sprite()
 
@@ -497,8 +498,6 @@ def Event():
             else:
                 i = n
                 last.pop()
-        elif event.type == pygame.KEYDOWN and event.key == pygame.K_LCTRL:
-            print(g[1])
         elif event.type == pygame.QUIT \
                 or event.type == pygame.KEYDOWN \
                 and event.key == pygame.K_ESCAPE \
@@ -542,7 +541,6 @@ def list_check(first: list):
 def main():
     global i, state, window, last
     while window[0]:
-        # if pygame.display.get_init()
         if ExitCheck():
             break
         state_update(state[i])
@@ -560,7 +558,6 @@ def main():
                     ExitCheck()
                     loop_p = loop_p + pygame.time.get_ticks()
                     if (loop_p - loop) > 55 * 60 * 1000:
-                        # if (loop_p - loop) > 120000000:
                         loop = None
                         loop_p = 0
                         break
@@ -575,4 +572,5 @@ def main():
     pygame.time.delay(10)
     pygame.quit()
 
-main()
+if __name__ == '__main__':
+    main()
